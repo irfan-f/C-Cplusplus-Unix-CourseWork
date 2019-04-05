@@ -60,8 +60,8 @@ main(int argc, char *argv[])
   for (i = 0; i < argc; i++) {
     sum += atoi(argv[i]);
   }
-  
-  printf("The sum is %d\n", sum);
+  float average = sum / argc;
+  printf("The average is %f\n", average);
   
   return 0;
 }
