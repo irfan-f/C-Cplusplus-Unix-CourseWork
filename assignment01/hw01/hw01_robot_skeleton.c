@@ -168,7 +168,11 @@ void respond(int argc, char **argv)
 {
     printf("---- Answer ----\n");
     // Enter your code here
-
+    for(int w = 0; w < NUM_RESPONSE; ++w) {
+        char *string = INPUT_STR[w];
+        string[0] = tolower(string[0]);
+        INPUT_STR[w] = string;
+    }
     for(int i = 1; i < argc; ++i) {
 	int found = 0;
 
