@@ -174,6 +174,11 @@ void respond(int argc, char **argv)
 
 	// Convert each input to lower case only
 	char *str = argv[i];
+	int slen = strlen(str);
+	for(int s = 0; s < slen; ++s) {
+	    str[s] = tolower(str[s]);
+	}
+	printf("%s\n", str);
 	
 	// Compare each input with each possible value
 	for(int j = 0; j < NUM_RESPONSE; ++j) {
