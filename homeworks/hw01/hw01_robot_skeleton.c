@@ -168,8 +168,8 @@ void respond(int argc, char **argv)
 {
     printf("---- Answer ----\n");
     // Enter your code here
+    int found = 0; int occur = 0;
     for(int i = 1; i < argc; ++i) {
-	    int found = 0;
 
 	// Convert input to lower case with upper case first letter to match arrays
 	    char *str = argv[i];
@@ -189,9 +189,9 @@ void respond(int argc, char **argv)
 		        printf("%s\n", RESPONSE_STR[j]);
 		        found = 1;
 	        } else if(found == 0 && j == 4) {
-		        printf("%s\n", RESPONSE_STR[5]);
-	        }
-	    }
+                printf("%s\n", RESPONSE_STR[5]);
+            }
+        }
     }
     printf("--------\n\n");
 }
