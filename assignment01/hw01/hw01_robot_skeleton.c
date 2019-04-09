@@ -168,32 +168,30 @@ void respond(int argc, char **argv)
 {
     printf("---- Answer ----\n");
     // Enter your code here
-    for(int w = 0; w < NUM_RESPONSE; ++w) {
-        char *string = INPUT_STR[w];
-        string[0] = tolower(string[0]);
-        INPUT_STR[w] = string;
-    }
     for(int i = 1; i < argc; ++i) {
-	int found = 0;
+	    int found = 0;
 
-	// Convert each input to lower case only
-	char *str = argv[i];
-	int slen = strlen(str);
-	for(int s = 0; s < slen; ++s) {
-	    str[s] = tolower(str[s]);
-	}
-	printf("%s\n", str);
+	// Convert input to lower case with upper case first letter to match arrays
+	    char *str = argv[i];
+	    int slen = strlen(str);
+	    for(int s = 0; s < slen; ++s) {
+	        if(s == 0) {
+                str[s] = toupper(str[s]);
+            } else {
+            str[s] = tolower(str[s]);
+            }	    
+        }
 	
 	// Compare each input with each possible value
-	for(int j = 0; j < NUM_RESPONSE; ++j) {
-	    int comp = strcmp(str, INPUT_STR[j]);
-	    if(comp == 0) {
-		printf("%s\n", RESPONSE_STR[j]);
-		found = 1;
-	    } else if(found == 0 && j == 4) {
-		printf("%s\n", RESPONSE_STR[5]);
+	    for(int j = 0; j < NUM_RESPONSE; ++j) {
+	        int comp = strcmp(str, INPUT_STR[j]);
+	        if(comp == 0) {
+		        printf("%s\n", RESPONSE_STR[j]);
+		        found = 1;
+	        } else if(found == 0 && j == 4) {
+		        printf("%s\n", RESPONSE_STR[5]);
+	        }
 	    }
-	}
     }
     printf("--------\n\n");
 }
