@@ -29,6 +29,17 @@ up to 2 points extra credit for really good answers to (6) or efficient implemen
 
 **************************************************************/
 
+/*
+
+The print out of apply by col is skewed as print_str is set up to print by row. I left it as is but I can make changes if necessary.
+
+
+*/
+
+
+
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -223,8 +234,9 @@ apply_by_col(void (*func)(char *, int, int, int, int),
 }
 
 /******* TODO: add you discussion for part (6) here ***************************
+Apply by row should be more efficient as C is row-major memory. Meaning that in 3D arrays the data is held in contiguous order based off of row and then col.
+Therefore when going through rows it is much more efficient to simply increase memory addresses with row, rather than moving to a new address for each call with col.
 
-
-
+Considering that we're capitalizing for the first coloumn this code could be made much more efficient, however with looping through each node it is more efficient to go by row.
 
 *******************************************************************************/
