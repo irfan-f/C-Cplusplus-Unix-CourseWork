@@ -34,12 +34,12 @@ void respond(int argc, char **argv);
 int main(int argc, char **argv)
 {
     // Sample code 
-    arg_test(argc, argv);
-    arg_print(argc, argv);
-    str_comparison(argc, argv);
-    str_case(argc, argv);
-    print_input(); 
-    print_response(); 
+    //arg_test(argc, argv);
+    //arg_print(argc, argv);
+    //str_comparison(argc, argv);
+    //str_case(argc, argv);
+    //print_input(); 
+    //print_response(); 
 
     // Homework 1, Part 1
     respond(argc, argv);
@@ -168,7 +168,11 @@ void respond(int argc, char **argv)
 {
     printf("---- Answer ----\n");
     // Enter your code here
-    int found = 0; int occur = 0;
+
+    // Start a var to determine if an accepted phrase is entered
+    int found = 0;
+    
+    // Loop through inputs
     for(int i = 1; i < argc; ++i) {
 
 	// Convert input to lower case with upper case first letter to match arrays
@@ -183,15 +187,18 @@ void respond(int argc, char **argv)
         }
 	
 	// Compare each input with each possible value
+    // If same print response phrase and indicate a phrase found with var found.
 	    for(int j = 0; j < NUM_RESPONSE; ++j) {
 	        int comp = strcmp(str, INPUT_STR[j]);
 	        if(comp == 0) {
 		        printf("%s\n", RESPONSE_STR[j]);
 		        found = 1;
-	        } else if(found == 0 && j == 4) {
-                printf("%s\n", RESPONSE_STR[5]);
-            }
+	        }
         }
+    }
+    // If found stays 0 print "I don't understand what you are saying."
+    if(found == 0) {
+        printf("%s\n", RESPONSE_STR[5]);
     }
     printf("--------\n\n");
 }
