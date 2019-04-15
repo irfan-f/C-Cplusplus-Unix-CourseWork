@@ -26,7 +26,7 @@ int main(int argc, char **argv)
         print_matrix(row, col, int_array);
 
         // Insert your code here (1)
-        int n = -1;
+        int n = atoi(argv[1])- 1;
 
         // ------------------------
 
@@ -132,7 +132,27 @@ void load_data(int ***int_array, uint32_t *row, uint32_t *col)
 void find_nth(int **int_array, uint32_t row, uint32_t col, int n, int *ret_arr)
 {
    // Insert your code here (2)
-
+    for(int i = 0; i < col; ++i) {
+        printf("----------Coloumn %d----------\n", i);
+        int max; int temp = 0; int largest; int cur;
+        for(int a = 0; a <= n; ++a) {
+            max = 0;
+            for(int j = 0; j < row; ++j) {
+                cur = int_array[j][i];
+                if(temp > 0) {
+                    if(cur > max && cur < temp) {
+                        max = cur;
+                    }
+                } else {
+                    if(cur > max) {
+                        max = cur;
+                    }
+                }
+            }
+            temp = max;
+        }
+        printf("The val is %d\n", temp);
+    }
 
 
    // -------------------------
