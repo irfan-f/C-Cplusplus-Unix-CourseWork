@@ -26,10 +26,16 @@ int main(int argc, char **argv)
         print_matrix(row, col, int_array);
 
         // Insert your code here (1)
-        int n = atoi(argv[1])- 1;
-
+        int n;
+        // nth largest is the n-1 index of largest in array
+        if((*argv[1] - '0') == 0 || (*argv[1] - '0') == -3) {
+            n = -2;
+        } else if(atoi(argv[1]) > row) {
+            n = -1;
+        } else {
+            n = atoi(argv[1])-1;
+        }
         // ------------------------
-
         find_nth(int_array, row, col, n, ret_array);
         printf("---- Answer ----\n");
         for(int i = 0; i < col; i++) {
@@ -37,6 +43,7 @@ int main(int argc, char **argv)
         }
         printf("\n");
         printf("--------\n");
+        free(ret_array);
 
     } else {
         // Do nothing
@@ -131,9 +138,21 @@ void load_data(int ***int_array, uint32_t *row, uint32_t *col)
 // different sized matrix with different values.
 void find_nth(int **int_array, uint32_t row, uint32_t col, int n, int *ret_arr)
 {
-   // Insert your code here (2)
+    // Insert your code here (2)
+    // Error handling
+    if (n == -1) {
+        for(int i = 0; i < row; ++i) {
+            ret_arr[i] = -1;
+        }
+        return;
+    } else if (n == -2) {
+        for(int i = 0; i < row; ++i) {
+            ret_arr[i] = -2;
+        }
+        return;
+    }
+    // Iterate through each coloumn
     for(int i = 0; i < col; ++i) {
-        printf("----------Coloumn %d----------\n", i);
         int max; int temp = 0; int largest; int cur;
         for(int a = 0; a <= n; ++a) {
             max = 0;
@@ -151,9 +170,8 @@ void find_nth(int **int_array, uint32_t row, uint32_t col, int n, int *ret_arr)
             }
             temp = max;
         }
-        printf("The val is %d\n", temp);
+        ret_arr[i] = temp;        
     }
-
 
    // -------------------------
 }
