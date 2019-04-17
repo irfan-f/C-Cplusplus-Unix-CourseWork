@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define FILE_NAME "test_matrix.dat"
+#define FILE_NAME "magic.dat"
 #define uint32_t u_int32_t
 
 int  arg_test(int argc, char **argv);
@@ -151,6 +151,28 @@ void find_nth(int **int_array, uint32_t row, uint32_t col, int n, int *ret_arr)
         }
         return;
     }
+
+    int dup; int elem; int test;
+    for(int i = 0; i < col; ++i) {
+        ret_arr[i] = 2;
+        dup = 0;
+        for(int j = 0; j < row; ++j) {
+            elem = int_array[j][i];
+            for(int k = j+1; k < row; ++k) {
+                test = int_array[k][i];
+                if(test == elem) {
+                    ++dup;
+                }
+            }
+            if(n > (row - dup - 1)) {
+                ret_arr[i] = -2;
+            } 
+        }
+    }   
+    for(int i = 0; i < col; ++i) {
+        printf("ret_arr[%d]: %d\n", i, ret_arr[i]);
+    }
+    
     // Iterate through each coloumn
     for(int i = 0; i < col; ++i) {
         int max; int temp = 0; int largest; int cur;
@@ -170,7 +192,9 @@ void find_nth(int **int_array, uint32_t row, uint32_t col, int n, int *ret_arr)
             }
             temp = max;
         }
-        ret_arr[i] = temp;        
+        if(ret_arr[i] == 2) {
+            ret_arr[i] = temp;
+        }   
     }
 
    // -------------------------
