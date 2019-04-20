@@ -10,7 +10,7 @@ AR=ar
 CFLAGS=-g -O2 -I./include -L./lib -fPIC
 LIBS=-llab3 -lm
 
-all: lab3
+all: lab3_dyn
 
 obj:
 	mkdir -p obj
@@ -24,18 +24,16 @@ obj/stats.o: src/stats.c include/stats.h obj
 obj/ohno.o: src/ohno.c include/ohno.h obj
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-lib/liblab3.a: obj/stats.o obj/ohno.o lib
-	$(AR) rc lib/liblab3.a obj/stats.o obj/ohno.o
+lib/liblab3.so: obj/stats.o obj/ohno.o lib
+	$(CC) -shared -o lib/liblab3.so obj/stats.o obj/ohno.o
+	export LD_LIBRARY_PATH==./lib:$LD_LIBRARY_PATH
 
-lib/liblab3.so: obj/stats.o obj/ohno.o
-	$(CC) -shared -o liblab3.so obj/stats.o obj/ohno.o
-
-lab3: src/lab3.c lib/liblab3.a
+lab3_dyn: src/lab3.c lib/liblab3.so
 	$(CC) $(CFLAGS) -o $@ $< $(LIBS)
 
 #lab3_dyn: src/lab3.c lib/liblab.so
 #	$(CC) $(CFLAGS) -o $@ $< $(LIBS)
 clean:
-	rm lab3 lib/liblab3.a obj/ohno.o obj/stats.o
+	rm lab3_dyn lib/liblab3.so obj/ohno.o obj/stats.o
 	rmdir obj
 	rmdir lib
