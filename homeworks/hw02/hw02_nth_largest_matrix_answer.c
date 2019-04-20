@@ -10,6 +10,16 @@ void load_data(int ***int_array, uint32_t *row, uint32_t *col);
 void find_nth(int **int_array, uint32_t row, uint32_t col, int n, int *ret_arr);
 void print_matrix(uint32_t row, uint32_t col, int **arr);
 
+/*
+	Current Code will not be most efficient
+
+	I have run out of time to comment and imporve my code
+
+*/
+
+
+
+
 int main(int argc, char **argv)
 {
     int valid = arg_test(argc, argv);
