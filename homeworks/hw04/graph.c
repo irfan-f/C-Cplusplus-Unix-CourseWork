@@ -128,7 +128,9 @@ void construct_adj_list(int **adj_mat, int rows, int cols, adj_node_t ***list)
 				add_node(*list, i, node);
 			}
 		}
+		free(adj_mat[i]);
 	}
+	free(adj_mat);
     // You will need to implement create_node() and
     // add_node() and use them to implement this function
 }
