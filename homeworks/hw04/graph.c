@@ -11,8 +11,15 @@
 void init_adj_list(adj_node_t ***list, int rows)
 {
     // Part 2 - Fill in this function
+    	// Initialize i, malloc *list as it is passed in as a pointer. 
+	// Loop through each row index of list and set to NULL
+	int i;
 	*list = malloc(sizeof(adj_node_t*) * rows);
+	for(i = 0; i < rows; ++i) {
+		(*list)[i] = NULL;
+	}
 }
+
 
 
 // This function creates a new adj_node_t node
@@ -22,9 +29,11 @@ void init_adj_list(adj_node_t ***list, int rows)
 adj_node_t *create_node(int vid)
 {
     // Part 3 - Fill in this function
-	adj_node_t *node = malloc(sizeof(int) + sizeof(adj_node_t*));
+        // Malloc for sizeof node, and set values of node accordingly
+	// set next to NULL
+	adj_node_t *node = (adj_node_t*) malloc(sizeof(adj_node_t));
 	node->vid = vid;
-	node->next = NULL;
+	node->next = (adj_node_t*) NULL;
 	return node;
 }
 
@@ -36,15 +45,28 @@ adj_node_t *create_node(int vid)
 // the new node
 void add_node(adj_node_t** list, int row, adj_node_t* node)
 {
-    // Part 4 - Fill in this function
-	adj_node_t *x = list[row];
-	if (x != NULL) {
+    // Part 4 - Fill in this function;
+    	// If row is -1, means that we are using as enqueue for bfs function
+	if (row == -1) {
+		// make y the first node of list, iterate until next = NULL and set
+		adj_node_t *y = *list;
+		while (y->next != NULL) {
+			y = y->next;
+		}
+		y->next = node;
+		return;
+	}
+	// Implement same as above but looping through the correct row
+	if (list[row] != NULL) {
+		adj_node_t *x = list[row];
 		while(x->next != NULL) {
 			x = x->next;
 		}
 		x->next = node;
+		return;
 	} else {
-		x = node;
+		list[row] = node;
+		return;
 	}
 }
 
@@ -54,16 +76,25 @@ void add_node(adj_node_t** list, int row, adj_node_t* node)
 int remove_node(adj_node_t **list)
 {
     // Part 6 - Implement this function
-	// int r = *list->vid;
-	// adj_node_t *prev = NULL;
-	// adj_node_t *node = *list;
-	// while (node->next != NULL) {
-	//	  prev = node;
-	//	 node = node->next;
-	// }
-	adj_node_t *node = *list;
-	return node->vid;
-	
+    	// Val is return vid, if next is null then return -2 for use in bfs
+	// Else set x = next, and set val to the vode that will be removed
+	// If x->next is null then set (*list)->next as NULL
+	// else set to next node, and free x
+	int val;
+	if ((*list)->next != NULL) {
+		adj_node_t *x = (*list)->next;
+		val = x->vid;
+		if (x->next != NULL) {
+			(*list)->next = x->next;
+			free(x);
+		} else {
+			(*list)->next  = NULL;
+		}
+	} else {
+		(*list)->vid = -2;
+		val = (*list)->vid;
+	}
+	return val;
 }
 
 
@@ -86,17 +117,18 @@ void construct_adj_list(int **adj_mat, int rows, int cols, adj_node_t ***list)
 
     init_adj_list(list, rows);
     // Part 1 - Fill in the rest of this function
-	int i, j, vid = 0;
+	// Initialize vars, and loo[ through each row and col
+	// if there is a 1 in [row][col] then create node j and add to row i;
+    	int i, j;
+	adj_node_t *node;
 	for (i = 0; i < rows; ++i) {
 		for (j = 0; j < cols; ++j) {
 			if(adj_mat[i][j] != 0) {
-				adj_node_t* node = create_node(vid);
+				node = create_node(j);
 				add_node(*list, i, node);
 			}
-			++vid;
 		}
 	}
-
     // You will need to implement create_node() and
     // add_node() and use them to implement this function
 }
@@ -122,19 +154,35 @@ void print_adj_list(adj_node_t **list, int rows)
 void free_adj_list(adj_node_t **list, int rows)
 {
     // Part 7 - Implement this function
+    	// Initialize vars and loop through each row
+	// Set node = list[row]
 	int i;
-	adj_node_t *node, *prev;
+	adj_node_t *node, *current;
 	for (i = 0; i < rows; ++i) {
 		node = list[i];
-		prev = node;
+		// If node has no next then just free node
 		while(node->next != NULL) {
-			free(prev);
-			prev = node;
-			node = node->next;
+			// Set current = next node
+			current = node->next;
+			if(current->next == NULL) {
+				// If next from current is NULL, free current
+				// Then free next, node is freed after while
+				free(current->next);
+				free(current);
+				node->next = NULL;
+				free(node->next);
+			} else {
+				// set node->next = current->next and free current
+				node->next = current->next;
+				current->next = NULL;
+				free(current->next);
+				free(current);
+			}
 		}
 		free(node);
 	}
-    
+	// Free the whole list
+   	free(list); 
 }
 
 void print_bfs_result(int rows, int *color, int *distance, int *parent)
@@ -173,8 +221,61 @@ int bfs(adj_node_t **list, int rows, int source,
     assert(parent);
 
     // Part 5 - Fill in the rest of this function
-
-
+	// Initialize color, distance, and parent to respective NULL/0/INF
+    	int i;
+	for(i = 0; i < rows; ++i) {
+		if(i != source) {
+			color[i] = 0;
+			distance[i] = (2^31) - 1;
+			parent[i] = -1;
+		}
+	}
+	color[source] = 1;
+	distance[source] = 0;
+	parent[source] = -1;
+	
+	// Make a Queue and initialize with s
+	int u = -2;
+	adj_node_t *v1, *v2;
+	adj_node_t *Q = create_node(-1);
+	adj_node_t *s = create_node(source);
+	add_node(&Q,-1,s);
+	// while Q vid is -1 which allows for error checking with -2 in remove
+	while(Q->vid == -1) {
+		// u represents vid of node start
+		u = remove_node(&Q);
+		// if u is -2 set v1 = NULL to bypass next while, and bypass setting color
+		if (u == -2){
+			v1 = NULL;
+		// else set v1 = to list[u], essentially first u->v pair.
+		} else {
+			v1 = list[u];
+		}
+		// Loop through adjacent nodes by setting v1 to v1->next each loop
+		while(v1 != NULL) {
+			// if not visited color and adjust data, else ignore and set v1 = v1->next
+			if(color[v1->vid] == 0) {
+				color[v1->vid] = 1;
+				distance[v1->vid] = distance[u] + 1;
+				parent[v1->vid] = u;
+				v2 = create_node(v1->vid);
+				add_node(&Q, -1, v2);
+			}
+			v1 = v1->next;
+		} 
+		// Bypassed if Q is empty
+		if(u != -2) {
+			color[u] = 2;	
+		}
+	}
+	// Free vars used
+	free(v1);
+	free(v2->next);
+	free(v2);
+	free(s->next);
+	free(s);
+	free(Q->next);
+	free(Q);
     #if DEBUG
     print_bfs_result(rows, color, distance, parent);
     #endif

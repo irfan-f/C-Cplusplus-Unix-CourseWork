@@ -46,7 +46,6 @@ int main(int argc, char **argv)
     print_adj_list(adj_list, row);
     #endif
 
-
     // BFS
     int *color = (int*) malloc(sizeof(int) * row);
     assert(color);

@@ -49,13 +49,6 @@ void print_matrix(int **matrix, int rows, int cols)
 void matrix_transpose(int **dst, int **src, int rows, int cols)
 {
     // Part 2 - Implement this function
-	// Loop through each location and send to corresponding location
-	int i, j;
-	for (i = 0; i < rows; ++i) {
-		for (j = 0; j < cols; ++j) {
-			dst[j][i] = src[i][j];
-		}
-	}
 }
 
 void spmv(int **mat, int *vec, int *res, int rows, int cols)
@@ -169,21 +162,9 @@ int bfs_spmv(int **int_array, int rows, int cols, int source,
 void init_2d_array(int ***arr, int rows, int cols)
 {
     // Part 1a - Implement this function
-	// Malloc array, and then malloc for each row
-	int i;
-	*arr = malloc(sizeof(int) * rows);
-	for (i = 0; i < rows; ++i) {
-		*arr[i] = malloc(sizeof(int) * cols);
-	}
 }
 
 void free_2d_array(int **arr, int rows)
 {
     // Part 1b - Implement this function
-	// Free the rows and then the whole array
-	int i;
-	for (i = 0; i < rows; ++i) {
-		free(arr[i]);
-	}
-	free(arr);
 }
