@@ -107,14 +107,14 @@ string CaesarCipher::encrypt(string raw)
             pos = raw[i] - 'a';
         } else {
             pos = raw[i] - 'A';
-            upper = 1;
+            upper = true;
         }
-        if(upper) {
-            retStr += UPPER_CASE(CaesarSmile->cipherText[(pos + CaesarSmile->rot)%27]);
-        } else {
-            retStr += CaesarSmile->cipherText[(pos + CaesarSmile->rot)%27];
-        }
-    }
+		if(upper == true) {
+        	retStr += UPPER_CASE(CaesarSmile->cipherText[(pos + CaesarSmile->rot) % 27]);
+       	} else {
+           	retStr += CaesarSmile->cipherText[(pos + CaesarSmile->rot) % 27];
+		}
+	}
     cout << "Done" << endl;
 
     return retStr;
@@ -134,15 +134,16 @@ string CaesarCipher::decrypt(string enc)
 		if(pos != std::string::npos) {
 			int x = pos;
 			x = (x - CaesarSmile->rot) % 27;
-			if(enc[i] <= 'Z' && enc[i] != ' ') {
+			// Edge case for negatives
+			if (x < 0) {
+				x += 27;
+			}
+			if(x == 26) {
+				retStr += ' ';
+			} else if(enc[i] <= 'Z' && enc[i] != ' ') {
 				retStr += UPPER_CASE(alph[x]);
 			} else {
-				if(x < 0) {
-					x = (27 + x) % 27;
-					retStr += alph[x];
-				} else {
-					retStr += alph[x];
-				}
+				retStr += alph[x];
 			}
 		}		
 	}
