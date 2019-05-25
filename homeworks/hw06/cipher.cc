@@ -2,6 +2,10 @@
 
 #define UPPER_CASE(r) ((r) - ('a' - 'A'))
 
+// Error when using negative offset. a's will become w's and b's will become x's
+// Only error that I have found through testing
+
+
 struct Cipher::CipherCheshire {
     string cipherText;
 };
