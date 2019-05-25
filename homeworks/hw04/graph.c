@@ -11,7 +11,7 @@
 void init_adj_list(adj_node_t ***list, int rows)
 {
     // Part 2 - Fill in this function
-    	// Initialize i, malloc *list as it is passed in as a pointer. 
+    // Initialize i, malloc *list as it is passed in as a pointer. 
 	// Loop through each row index of list and set to NULL
 	int i;
 	*list = malloc(sizeof(adj_node_t*) * rows);
@@ -29,7 +29,7 @@ void init_adj_list(adj_node_t ***list, int rows)
 adj_node_t *create_node(int vid)
 {
     // Part 3 - Fill in this function
-        // Malloc for sizeof node, and set values of node accordingly
+    // Malloc for sizeof node, and set values of node accordingly
 	// set next to NULL
 	adj_node_t *node = (adj_node_t*) malloc(sizeof(adj_node_t));
 	node->vid = vid;
@@ -46,7 +46,7 @@ adj_node_t *create_node(int vid)
 void add_node(adj_node_t** list, int row, adj_node_t* node)
 {
     // Part 4 - Fill in this function;
-    	// If row is -1, means that we are using as enqueue for bfs function
+    // If row is -1, means that we are using as enqueue for bfs function
 	if (row == -1) {
 		// make y the first node of list, iterate until next = NULL and set
 		adj_node_t *y = *list;
@@ -76,7 +76,7 @@ void add_node(adj_node_t** list, int row, adj_node_t* node)
 int remove_node(adj_node_t **list)
 {
     // Part 6 - Implement this function
-    	// Val is return vid, if next is null then return -2 for use in bfs
+    // Val is return vid, if next is null then return -2 for use in bfs
 	// Else set x = next, and set val to the vode that will be removed
 	// If x->next is null then set (*list)->next as NULL
 	// else set to next node, and free x
@@ -119,7 +119,7 @@ void construct_adj_list(int **adj_mat, int rows, int cols, adj_node_t ***list)
     // Part 1 - Fill in the rest of this function
 	// Initialize vars, and loo[ through each row and col
 	// if there is a 1 in [row][col] then create node j and add to row i;
-    	int i, j;
+    int i, j;
 	adj_node_t *node;
 	for (i = 0; i < rows; ++i) {
 		for (j = 0; j < cols; ++j) {
@@ -156,7 +156,7 @@ void print_adj_list(adj_node_t **list, int rows)
 void free_adj_list(adj_node_t **list, int rows)
 {
     // Part 7 - Implement this function
-    	// Initialize vars and loop through each row
+    // Initialize vars and loop through each row
 	// Set node = list[row]
 	int i;
 	adj_node_t *node, *current;
@@ -224,7 +224,7 @@ int bfs(adj_node_t **list, int rows, int source,
 
     // Part 5 - Fill in the rest of this function
 	// Initialize color, distance, and parent to respective NULL/0/INF
-    	int i;
+    int i;
 	for(i = 0; i < rows; ++i) {
 		if(i != source) {
 			color[i] = 0;
