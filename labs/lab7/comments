@@ -1,0 +1,1 @@
+Note: you can't use free for memory allocate with new! Use delete instead.
